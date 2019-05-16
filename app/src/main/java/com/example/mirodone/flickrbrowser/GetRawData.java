@@ -2,6 +2,7 @@ package com.example.mirodone.flickrbrowser;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,9 +19,18 @@ class GetRawData extends AsyncTask<String, Void, String> {
     //track our download status
     private DownloadStatus mDownloadStatus;
 
+
     public GetRawData(OnDownLoadComplete callBack) {
         this.mDownloadStatus = DownloadStatus.IDLE;
         mCallBack = callBack;
+    }
+
+    void runInSameThread(String s) {
+        Log.d(TAG, "runInSameThread Starts");
+
+        onPostExecute(doInBackground(s));
+
+        Log.d(TAG, "runInSameThread Ends");
     }
 
     @Override
@@ -30,6 +40,7 @@ class GetRawData extends AsyncTask<String, Void, String> {
             mCallBack.onDownloadComplete(s, mDownloadStatus);
         }
         // super.onPostExecute(s);
+        Log.d(TAG, "onPostExecute: ends");
     }
 
     @Override
@@ -93,13 +104,13 @@ class GetRawData extends AsyncTask<String, Void, String> {
                 }
             }
         }
-
         mDownloadStatus = DownloadStatus.FAILED_OR_EMPTY;
-
         return null;
     }
 
     interface OnDownLoadComplete {
         void onDownloadComplete(String data, DownloadStatus status);
     }
+
+
 }

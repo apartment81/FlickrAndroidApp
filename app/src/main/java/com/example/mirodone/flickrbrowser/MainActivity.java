@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements GetRawData.OnDownLoadComplete {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements GetFlickrJsonData.OnDataAvailable {
 
     private static final String TAG = "MainActivity";
 
@@ -21,8 +23,8 @@ public class MainActivity extends AppCompatActivity implements GetRawData.OnDown
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        GetRawData getRawData = new GetRawData(this);
-        getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=hotwheels,spinmaster&tagmode=any&format=json&nojsoncallback=1");
+//        GetRawData getRawData = new GetRawData(this);
+//        getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=hotwheels,ferrari&tagmode=any&format=json&nojsoncallback=1");
 
 
         Log.d(TAG, "onCreate: ends");
@@ -34,6 +36,16 @@ public class MainActivity extends AppCompatActivity implements GetRawData.OnDown
         getMenuInflater().inflate(R.menu.menu_main, menu);
         Log.d(TAG, "onCreateOptionsMenu() returned: " + true);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume starts");
+        super.onResume();
+        GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", "en-us", true);
+
+        getFlickrJsonData.execute("ferrari, mercedes");
+        Log.d(TAG, "onResume Ends");
     }
 
     @Override
@@ -52,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements GetRawData.OnDown
     }
 
     @Override
-    public void onDownloadComplete(String data, DownloadStatus status) {
+    public void onDataAvailable(List<Photo> data, DownloadStatus status) {
         if (status == DownloadStatus.OK) {
             Log.d(TAG, "onDownloadComplete() data is " + data);
         } else {
