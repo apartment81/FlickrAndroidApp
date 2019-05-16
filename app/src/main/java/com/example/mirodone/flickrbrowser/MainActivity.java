@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GetRawData.OnDownLoadComplete {
 
     private static final String TAG = "MainActivity";
 
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        GetRawData getRawData = new GetRawData();
+        GetRawData getRawData = new GetRawData(this);
         getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=hotwheels,spinmaster&tagmode=any&format=json&nojsoncallback=1");
 
 
@@ -51,10 +51,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onDownloadComplete (String data, DownloadStatus status){
-        if (status == DownloadStatus.OK){
+    @Override
+    public void onDownloadComplete(String data, DownloadStatus status) {
+        if (status == DownloadStatus.OK) {
             Log.d(TAG, "onDownloadComplete() data is " + data);
-        }else {
+        } else {
             //download or processing failed
             Log.e(TAG, "onDownloadComplete() failed with status " + status);
         }
