@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
         mFlickRecyclerViewAdapter = new FlickRecyclerViewAdapter(this, new ArrayList<Photo>());
         recyclerView.setAdapter(mFlickRecyclerViewAdapter);
 
+        
 //        GetRawData getRawData = new GetRawData(this);
 //        getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=hotwheels,ferrari&tagmode=any&format=json&nojsoncallback=1");
 
