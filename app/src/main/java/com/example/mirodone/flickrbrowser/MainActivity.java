@@ -2,16 +2,20 @@ package com.example.mirodone.flickrbrowser;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GetFlickrJsonData.OnDataAvailable {
 
     private static final String TAG = "MainActivity";
+    private FlickRecyclerViewAdapter mFlickRecyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +24,13 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mFlickRecyclerViewAdapter = new FlickRecyclerViewAdapter(this, new ArrayList<Photo>());
+        recyclerView.setAdapter(mFlickRecyclerViewAdapter);
 
 //        GetRawData getRawData = new GetRawData(this);
 //        getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=hotwheels,ferrari&tagmode=any&format=json&nojsoncallback=1");
@@ -65,12 +74,16 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
 
     @Override
     public void onDataAvailable(List<Photo> data, DownloadStatus status) {
+        Log.d(TAG, "onDataAvailable() : starts ");
+
         if (status == DownloadStatus.OK) {
-            Log.d(TAG, "onDownloadComplete() data is " + data);
+            mFlickRecyclerViewAdapter.loadNewData(data);
+
         } else {
             //download or processing failed
             Log.e(TAG, "onDownloadComplete() failed with status " + status);
         }
+        Log.d(TAG, "onDataAvailable() : ends ");
     }
 
 
