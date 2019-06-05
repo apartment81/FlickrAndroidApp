@@ -2,7 +2,7 @@ package com.example.mirodone.flickrbrowser;
 
 import java.io.Serializable;
 
-class Photo implements Serializable{
+class Photo implements Serializable {
 
     public static final long serialVersionUID = 1L;
 
@@ -13,7 +13,7 @@ class Photo implements Serializable{
     private String mTags;
     private String mImage;
 
-    public Photo(String title, String author, String authorId, String link, String tags, String image) {
+    Photo(String title, String author, String authorId, String link, String tags, String image) {
         mTitle = title;
         mAuthor = author;
         mAuthorId = authorId;
@@ -30,9 +30,6 @@ class Photo implements Serializable{
         return mAuthor;
     }
 
-    public String getAuthorId() {
-        return mAuthorId;
-    }
 
     public String getLink() {
         return mLink;

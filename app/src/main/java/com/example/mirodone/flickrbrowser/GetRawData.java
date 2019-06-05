@@ -20,7 +20,7 @@ class GetRawData extends AsyncTask<String, Void, String> {
     private DownloadStatus mDownloadStatus;
 
 
-    public GetRawData(OnDownLoadComplete callBack) {
+     GetRawData(OnDownLoadComplete callBack) {
         this.mDownloadStatus = DownloadStatus.IDLE;
         mCallBack = callBack;
     }

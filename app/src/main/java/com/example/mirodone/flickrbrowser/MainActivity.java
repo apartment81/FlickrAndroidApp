@@ -1,7 +1,9 @@
 package com.example.mirodone.flickrbrowser;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,7 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActiviy implements GetFlickrJsonData.OnDataAvailable,
+public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDataAvailable,
         RecyclerItemClickListener.OnRecyclerClickListener {
 
     private static final String TAG = "MainActivity";
@@ -54,10 +56,15 @@ public class MainActivity extends BaseActiviy implements GetFlickrJsonData.OnDat
     protected void onResume() {
         Log.d(TAG, "onResume starts");
         super.onResume();
-        GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", "en-us", true);
 
-        // getFlickrJsonData.execute("ferrari, mercedes");
-        getFlickrJsonData.execute("car");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String queryResult = sharedPreferences.getString(FLICKR_QUERY, "");
+
+        if (queryResult.length() > 0) {
+            GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", "en-us", true);
+
+            getFlickrJsonData.execute(queryResult);
+        }
         Log.d(TAG, "onResume Ends");
     }
 
@@ -72,6 +79,13 @@ public class MainActivity extends BaseActiviy implements GetFlickrJsonData.OnDat
         if (id == R.id.action_settings) {
             return true;
         }
+
+        if (id == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         Log.d(TAG, "onOptionsItemSelected() returned: returned ");
         return super.onOptionsItemSelected(item);
     }

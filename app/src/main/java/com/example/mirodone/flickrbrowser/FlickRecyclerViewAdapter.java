@@ -20,7 +20,7 @@ class FlickRecyclerViewAdapter extends RecyclerView.Adapter<FlickRecyclerViewAda
     private List<Photo> mPhotoList;
     private Context mContext;
 
-    public FlickRecyclerViewAdapter(Context context, List<Photo> photoList) {
+    FlickRecyclerViewAdapter(Context context, List<Photo> photoList) {
         mPhotoList = photoList;
         mContext = context;
     }
@@ -36,48 +36,53 @@ class FlickRecyclerViewAdapter extends RecyclerView.Adapter<FlickRecyclerViewAda
     @Override
     public void onBindViewHolder(@NonNull FlickrImageViewHolder holder, int position) {
         //called by the layout manager when it wants new data in an existing row
-        Photo photoItem = mPhotoList.get(position);
 
-        Log.d(TAG, "onBindViewHolder" + photoItem.getTitle() + " >>>> " + position);
+        if ((mPhotoList == null) || (mPhotoList.size() == 0)) {
+            holder.thumbnail.setImageResource(R.drawable.placeholder);
+            holder.title.setText(R.string.empty_photo);
+        } else {
 
-        Picasso.get().load(photoItem.getImage())
-                .error(R.drawable.placeholder)
-                .placeholder(R.drawable.placeholder)
-                .into(holder.thumbnail);
-        holder.title.setText(photoItem.getTitle());
+            Photo photoItem = mPhotoList.get(position);
+            Log.d(TAG, "onBindViewHolder" + photoItem.getTitle() + " >>>> " + position);
 
+            Picasso.get().load(photoItem.getImage())
+                    .error(R.drawable.placeholder)
+                    .placeholder(R.drawable.placeholder)
+                    .into(holder.thumbnail);
+            holder.title.setText(photoItem.getTitle());
+        }
     }
 
     @Override
     public int getItemCount() {
-      //  Log.d(TAG, "getItemCount: called");
+        //  Log.d(TAG, "getItemCount: called");
 
         //return number of entries
 
-        if((mPhotoList != null) && (mPhotoList.size() != 0)){
+        if ((mPhotoList != null) && (mPhotoList.size() != 0)) {
             return mPhotoList.size();
-        }else {
-            return 0;
+        } else {
+            return 1;
         }
-       // return ((mPhotoList != null) && (mPhotoList.size() !=0) ? mPhotoList.size() : 0);
+        // return ((mPhotoList != null) && (mPhotoList.size() !=0) ? mPhotoList.size() : 0);
     }
 
-    void loadNewData (List<Photo> newPhotos) {
+    void loadNewData(List<Photo> newPhotos) {
         mPhotoList = newPhotos;
         notifyDataSetChanged();
     }
 
-    public Photo getPhoto (int position) {
-        return ((mPhotoList != null) && (mPhotoList.size() !=0) ? mPhotoList.get(position) : null);
+    public Photo getPhoto(int position) {
+        return ((mPhotoList != null) && (mPhotoList.size() != 0) ? mPhotoList.get(position) : null);
     }
 
     static class FlickrImageViewHolder extends RecyclerView.ViewHolder {
         private static final String TAG = "FlickrImageViewHolder";
-        ImageView thumbnail = null;
-        TextView title = null;
+        ImageView thumbnail;
+        TextView title;
 
 
-        public FlickrImageViewHolder(View itemView) {
+        FlickrImageViewHolder(View itemView) {
             super(itemView);
             Log.d(TAG, "FlickrImageViewHolder");
             this.thumbnail = itemView.findViewById(R.id.thumbnail);

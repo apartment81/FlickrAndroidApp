@@ -3,7 +3,6 @@ package com.example.mirodone.flickrbrowser;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +10,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>>implements GetRawData.OnDownLoadComplete {
+class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements GetRawData.OnDownLoadComplete {
 
     private static final String TAG = "GetFlickrJsonData";
     private final OnDataAvailable mCallBack;
@@ -30,7 +29,7 @@ class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>>implements G
         mCallBack = callBack;
     }
 
-    void executeOnSameThread(String searchCriteria) {
+/*    void executeOnSameThread(String searchCriteria) {
         Log.d(TAG, "executeOnSameThread called");
 
         runningOnSameThread = true;
@@ -40,7 +39,7 @@ class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>>implements G
         GetRawData getRawData = new GetRawData(this);
         getRawData.execute(destinationUri);
         Log.d(TAG, "executeOnSameThread ends");
-    }
+    }*/
 
 
     // onPostExecute is called in  the main thread ( UI thread )
@@ -49,7 +48,7 @@ class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>>implements G
         //notify the caller the data (list of photos) is now available
         Log.d(TAG, "onPostExecute Starts");
 
-        if(mCallBack != null) {
+        if (mCallBack != null) {
             mCallBack.onDataAvailable(mPhotoList, DownloadStatus.OK);
         }
 
@@ -119,10 +118,10 @@ class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>>implements G
         }
 
     }
+
     interface OnDataAvailable {
         void onDataAvailable(List<Photo> data, DownloadStatus status);
     }
-
 
 
 }
