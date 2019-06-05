@@ -119,7 +119,6 @@ class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>>implements G
         }
 
     }
-
     interface OnDataAvailable {
         void onDataAvailable(List<Photo> data, DownloadStatus status);
     }

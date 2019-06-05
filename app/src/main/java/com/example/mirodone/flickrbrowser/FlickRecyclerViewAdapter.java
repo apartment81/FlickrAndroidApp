@@ -50,7 +50,7 @@ class FlickRecyclerViewAdapter extends RecyclerView.Adapter<FlickRecyclerViewAda
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: called");
+      //  Log.d(TAG, "getItemCount: called");
 
         //return number of entries
 

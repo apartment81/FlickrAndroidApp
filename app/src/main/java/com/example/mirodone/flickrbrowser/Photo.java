@@ -1,6 +1,10 @@
 package com.example.mirodone.flickrbrowser;
 
-class Photo {
+import java.io.Serializable;
+
+class Photo implements Serializable{
+
+    public static final long serialVersionUID = 1L;
 
     private String mTitle;
     private String mAuthor;
